@@ -215,8 +215,6 @@ while PlaylistId:
             print title
             print link
             print "\n"
-            
-            xspfPlaylist.add_track(title=title.decode('utf8', 'ignore'), location=link)
 
     if (startIndex + len(entries)) >= numVideos:
         break
