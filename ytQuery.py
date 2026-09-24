@@ -33,10 +33,21 @@ apiKey = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 def GetJson(url):
     data = urllib.urlopen(url)
     json_data = json.loads(data.read())
+	
+    #print url
     
-    if 'error' in json_data and json_data['error']['message'] == "API key expired. Please renew the API key.":
-        print 'ERROR: API key expired!'
-        return None
+    if 'error' in json_data:
+	
+	    message = json_data['error']['message']
+		
+	    if message == "API key expired. Please renew the API key.":
+			print 'ERROR: API key expired!'
+	    elif message == "API key not valid. Please pass a valid API key.":	
+		    print 'ERROR: API key is invalid! Did you remember to set it!?'
+	    else:
+		    print message
+			
+	    return None
             
     return json_data
 
@@ -155,7 +166,12 @@ def GetVideoOwner( VideoId ):
 	"&id=%s" \
 	"&key=%s" % (VideoId, apiKey)
 	
-	return GetJson(url)['items'][0]['snippet']['channelId']
+	response = GetJson(url)
+	
+	if response and 'items' in response:
+	    return response['items'][0]['snippet']['channelId']
+	else:
+	    return "ERROR: Invalid Response"
 
 
 maxResults = 50
