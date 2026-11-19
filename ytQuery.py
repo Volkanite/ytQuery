@@ -5,17 +5,17 @@ from urllib.request import urlopen
 
 parser = OptionParser()
 parser.add_option('-u', '--user', dest='user', help='The YouTube username',default=None)
-parser.add_option('-c', '--channel', dest='channel', help='The YouTube channel id',default=None)
+parser.add_option('-c', '--channel', dest='channel', help='Gets the channel ID a video belongs to',default=None)
 parser.add_option('-q', '--query', dest='query', help='Video query',default=None)
 parser.add_option('-p', '--playlist', dest='playlist', help='The Playlist Id',default=None)
-parser.add_option('-o', '--owner', dest='owner', help='Get the channel owner of a video',default=None)
+parser.add_option('-o', '--uploads', dest='uploads', help='Gets the uploads playlist from a channel ID',default=None)
 
 (options, args) = parser.parse_args()
 Options_user = options.user
 Options_channel = options.channel
 Options_query = options.query
 Options_playlist = options.playlist
-Options_owner = options.owner
+Options_uploads = options.uploads
 
 #An api key is needed for v3 of the Google api. In v2 we could do this anonymously but now that v2 is
 #deprecated I had to upgrade(still upgrading actually) to v3 and with every convenience (for Google 
@@ -193,8 +193,8 @@ else:
 if ready:
     if Options_user:
         PlaylistId = GetUploadsPlaylistId(Options_user)
-    if Options_channel:
-        PlaylistId = GetUploadsPlaylistIdForChannel(Options_channel)
+    if Options_uploads:
+        PlaylistId = GetUploadsPlaylistIdForChannel(Options_uploads)
     if Options_playlist:
         PlaylistId = Options_playlist
     if Options_query:
@@ -261,5 +261,5 @@ if ready:
         fileName = Options_query
     if Options_playlist:
         fileName = GetPlaylistName(Options_playlist)
-    if Options_owner:
-        print(GetVideoOwner(Options_owner))
+    if Options_channel:
+        print(GetVideoOwner(Options_channel))

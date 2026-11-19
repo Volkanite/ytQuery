@@ -10,11 +10,11 @@ I use to use https://commentpicker.com/youtube-channel-id.php but after it start
 - --user <> Prints a playlist of a user
 - --playlist <> Prints a playlist from a Youtube playlist
 - --query <> Prints a playlist from a search query (Limited to 500 videos)
-- --owner <> Prints the channel ID a video belongs to
-- --channel <> Prints the uploads playlist from a channel ID
+- --channel <> Prints the channel ID a video belongs to
+- --uploads <> Prints the uploads playlist from a channel ID
 
 ## Examples
-`python3 ytQuery.py --owner RKWrWRFyfYo`  
-`python3 ytQuery.py --channel UCsHzgQRjPzOz_w4HSrNLIVw`  
+`python3 ytQuery.py --channel RKWrWRFyfYo`  
+`python3 ytQuery.py --uploads UCsHzgQRjPzOz_w4HSrNLIVw`  
 `python3 ytQuery.py --playlist UUsHzgQRjPzOz_w4HSrNLIVw`  
 `python3 ytQuery.py --user UserName`
