@@ -1,6 +1,7 @@
 import urllib
 import json
 from optparse import OptionParser
+from urllib.request import urlopen
 
 parser = OptionParser()
 parser.add_option('-u', '--user', dest='user', help='The YouTube username',default=None)
@@ -31,23 +32,24 @@ apiKey = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 
 def GetJson(url):
-    data = urllib.urlopen(url)
+
+    #print(url)
+
+    data = urlopen(url)
     json_data = json.loads(data.read())
-	
-    #print url
     
     if 'error' in json_data:
-	
-	    message = json_data['error']['message']
-		
-	    if message == "API key expired. Please renew the API key.":
-			print 'ERROR: API key expired!'
-	    elif message == "API key not valid. Please pass a valid API key.":	
-		    print 'ERROR: API key is invalid! Did you remember to set it!?'
-	    else:
-		    print message
-			
-	    return None
+
+        message = json_data['error']['message']
+
+        if message == "API key expired. Please renew the API key.":
+            print('ERROR: API key expired!')
+        elif message == "API key not valid. Please pass a valid API key.":
+            print('ERROR: API key is invalid! Did you remember to set it!?')
+        else:
+            print(message)
+        
+        return None
             
     return json_data
 
@@ -181,16 +183,22 @@ entries = []
 PlaylistId = ""
 NextPageToken = ""
 fileName = ""
+ready = 0
 
+if apiKey != "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx":
+    ready = 1
+else:
+    print("Please update API key!!!") 
 
-if Options_user:
-    PlaylistId = GetUploadsPlaylistId(Options_user)
-if Options_channel:
-    PlaylistId = GetUploadsPlaylistIdForChannel(Options_channel)
-if Options_playlist:
-    PlaylistId = Options_playlist
-if Options_query:
-    numVideos = 500
+if ready:
+    if Options_user:
+        PlaylistId = GetUploadsPlaylistId(Options_user)
+    if Options_channel:
+        PlaylistId = GetUploadsPlaylistIdForChannel(Options_channel)
+    if Options_playlist:
+        PlaylistId = Options_playlist
+    if Options_query:
+        numVideos = 500
 
 #get number of videos
 if PlaylistId and numVideos == 0:
@@ -228,9 +236,9 @@ while PlaylistId:
             title = title.encode('utf8', 'ignore')
             link = "https://www.youtube.com/watch?v=%s" % (entry['snippet']['resourceId']['videoId'])
             
-            print title
-            print link
-            print "\n"
+            print(title)
+            print(link)
+            print("\n")
 
     if (startIndex + len(entries)) >= numVideos:
         break
@@ -238,19 +246,20 @@ while PlaylistId:
     startIndex += maxResults
     
     #progress
-    print "%d / %d" %(startIndex, numVideos)
+    print("%d / %d" %(startIndex, numVideos))
     
     #cant query beyond 500 items
     if Options_query and startIndex >= 500:
         break
-  
-if Options_user:
-    fileName = Options_user
-if Options_channel:
-    fileName = Options_channel
-if Options_query:
-    fileName = Options_query
-if Options_playlist:
-    fileName = GetPlaylistName(Options_playlist)
-if Options_owner:
-    print GetVideoOwner(Options_owner)
+
+if ready:  
+    if Options_user:
+        fileName = Options_user
+    if Options_channel:
+        fileName = Options_channel
+    if Options_query:
+        fileName = Options_query
+    if Options_playlist:
+        fileName = GetPlaylistName(Options_playlist)
+    if Options_owner:
+        print(GetVideoOwner(Options_owner))
